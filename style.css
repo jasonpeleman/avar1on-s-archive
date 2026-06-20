@@ -11,6 +11,14 @@
   padding: 0;
 }
 
+/* Forceert donkere weergave, ongeacht het systeemthema van de bezoeker.
+   Zonder dit kunnen sommige browsers/telefoons formulier-elementen
+   (inputs, scrollbars) automatisch aanpassen aan systeem-lichte modus,
+   wat niet bij dit ontwerp past. */
+:root {
+  color-scheme: light;
+}
+
 /* === CSS VARIABELEN (kleuren, fonts, etc.) === */
 :root {
   --bg: #0a0a0a; /* donkerste achtergrond — zoals logo */
