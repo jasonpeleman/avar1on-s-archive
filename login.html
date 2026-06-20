@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inloggen — Avar1on's Archive</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="login.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  </head>
+  <body>
+    <div class="login-wrap">
+      <div class="login-box">
+        <img class="login-logo" src="assets/logo.png" alt="Avarion's Archive" />
+
+        <div class="login-tabs">
+          <button class="login-tab active" data-mode="login">Inloggen</button>
+          <button class="login-tab" data-mode="signup">Account maken</button>
+        </div>
+
+        <form id="authForm">
+          <label class="login-label" for="email">E-mailadres</label>
+          <input
+            class="login-input"
+            type="email"
+            id="email"
+            required
+            autocomplete="email"
+          />
+
+          <label class="login-label" for="password">Wachtwoord</label>
+          <input
+            class="login-input"
+            type="password"
+            id="password"
+            required
+            autocomplete="current-password"
+            minlength="6"
+          />
+
+          <button class="login-submit" type="submit" id="submitBtn">
+            Inloggen
+          </button>
+        </form>
+
+        <p class="login-message" id="loginMessage"></p>
+      </div>
+    </div>
+
+    <script src="supabase-config.js"></script>
+    <script src="login.js"></script>
+  </body>
+</html>

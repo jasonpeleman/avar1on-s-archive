@@ -1,0 +1,315 @@
+/* ============================================
+   AVAR1ON'S ARCHIVE — set.css
+   ============================================ */
+
+/* === SET HEADER === */
+.detail-header {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border2);
+  padding: 1.5rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.back-btn {
+  background: transparent;
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  color: var(--text2);
+  padding: 7px 14px;
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+.back-btn:hover {
+  border-color: var(--border);
+  color: var(--text);
+}
+
+.detail-set-logo {
+  height: 50px;
+  object-fit: contain;
+}
+
+.detail-set-info h2 {
+  font-family: "Cinzel", serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 2px;
+}
+
+.detail-set-info p {
+  font-size: 12px;
+  color: var(--text3);
+}
+
+.detail-stats {
+  margin-left: auto;
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.detail-stat {
+  text-align: right;
+}
+
+.detail-stat .val {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.detail-stat .lbl {
+  font-size: 11px;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* === VOORTGANGSBALK === */
+.detail-progress-section {
+  padding: 1rem 2rem;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border2);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.detail-progress-bar-wrap {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 999px;
+  height: 8px;
+  overflow: hidden;
+}
+
+.detail-progress-bar {
+  height: 100%;
+  background: var(--green);
+  border-radius: 999px;
+  transition: width 0.4s;
+}
+
+.detail-pct {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--green);
+  min-width: 44px;
+  text-align: right;
+}
+
+/* === FILTER & ACTIES === */
+.detail-controls {
+  padding: 1rem 2rem;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--border2);
+}
+
+.filter-btn {
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  padding: 5px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border2);
+  background: transparent;
+  color: var(--text2);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.filter-btn:hover {
+  color: var(--text);
+  border-color: var(--border);
+}
+
+.filter-btn.active {
+  background: rgba(226, 185, 111, 0.15);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.reset-btn {
+  margin-left: auto;
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  padding: 5px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 80, 80, 0.2);
+  background: transparent;
+  color: rgba(255, 100, 100, 0.7);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.reset-btn:hover {
+  border-color: rgba(255, 80, 80, 0.5);
+  color: rgb(255, 100, 100);
+}
+
+/* === KAARTEN GRID === */
+.cards-content {
+  padding: 1.5rem 2rem;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 16px;
+}
+
+/* === KAART === */
+.poke-card {
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  background: var(--card);
+  overflow: hidden;
+  transition: all 0.15s;
+  position: relative;
+}
+
+.poke-card:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* Goudgele rand als alle varianten aangevinkt zijn */
+.poke-card.owned {
+  border-color: var(--accent);
+  background: rgba(226, 185, 111, 0.05);
+}
+
+/* Groene rand als sommige (maar niet alle) varianten aangevinkt zijn */
+.poke-card.partial {
+  border-color: var(--green);
+  background: rgba(45, 212, 160, 0.05);
+}
+
+.poke-card img {
+  width: 100%;
+  display: block;
+  aspect-ratio: 3 / 4;
+  object-fit: contain;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.card-img-placeholder {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.poke-card-info {
+  padding: 10px 12px 12px;
+}
+
+.poke-card-num {
+  font-size: 11px;
+  color: var(--text3);
+}
+
+.poke-card-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 2px;
+}
+
+.poke-card-rarity {
+  font-size: 11px;
+  color: var(--text3);
+  margin-bottom: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* === VARIANT KNOPPEN ===
+   Elke variant krijgt een eigen, volledige-breedte rij —
+   makkelijker te raken en duidelijker leesbaar dan kleine pills. */
+.variant-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.variant-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border2);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text2);
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  width: 100%;
+  text-align: left;
+}
+
+.variant-btn:hover {
+  border-color: var(--border);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+}
+
+.variant-btn.checked {
+  background: rgba(45, 212, 160, 0.15);
+  border-color: var(--green);
+  color: var(--green);
+}
+
+.variant-check {
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  border: 1.5px solid var(--text3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+
+.variant-btn.checked .variant-check {
+  background: var(--green);
+  border-color: var(--green);
+  color: var(--bg);
+}
+
+.variant-label {
+  font-size: 12px;
+}
+
+/* === LEEG / LOADING === */
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--text3);
+  padding: 4rem;
+  font-size: 13px;
+}

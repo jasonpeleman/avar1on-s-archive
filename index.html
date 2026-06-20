@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Avar1on's Archive</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header>
+      <a class="logo" href="index.html">
+        <img src="assets/logo.png" alt="Avarion's Archive" />
+      </a>
+      <div class="header-stats">
+        <div class="header-stat">
+          <div class="val" id="globalPct">0%</div>
+          <div class="lbl">Gemiddeld compleet</div>
+        </div>
+        <div class="header-stat">
+          <div class="val" id="globalOwned">0</div>
+          <div class="lbl">Kaarten heb ik</div>
+        </div>
+        <button class="logout-btn" id="logoutBtn">Uitloggen</button>
+      </div>
+    </header>
+
+    <!-- HERO -->
+    <div class="home-hero">
+      <img
+        class="hero-logo"
+        src="assets/logo.png"
+        alt="Avarion's Archive — Collect, Preserve, Master"
+      />
+      <p>
+        Track je Pokémon master sets — elke kaart, elke set, volledig
+        bijgehouden.
+      </p>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="home-content">
+      <!-- SERIES FILTER -->
+      <div class="series-filter" id="seriesFilter">
+        <span class="series-label">Series</span>
+        <button class="series-btn active" data-series="all">Alle</button>
+        <!-- Extra series-knoppen worden door JavaScript toegevoegd -->
+      </div>
+
+      <!-- SETS GRID -->
+      <div class="sets-grid" id="setsGrid">
+        <div class="loading-grid">Sets laden...</div>
+      </div>
+    </main>
+
+    <script src="supabase-config.js"></script>
+    <script src="my-sets.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
