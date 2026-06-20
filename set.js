@@ -39,6 +39,28 @@ const MANUAL_VARIANT_LABELS = {
   masterball: "Master Ball Pattern",
 };
 
+// Pokéball/Masterball patronen verschijnen alleen op deze rarities
+// (bevestigd voor Prismatic Evolutions: Common/Uncommon/Rare kaarten
+// hebben alle drie de varianten; ex-kaarten (Double Rare en hoger)
+// hebben deze patronen NIET).
+const MANUAL_VARIANT_RARITIES = ["Common", "Uncommon", "Rare"];
+
+function cardEligibleForManualVariants(card) {
+  return MANUAL_VARIANT_RARITIES.includes(card.rarity);
+}
+
+// Trainer-kaarten van Common/Uncommon hebben alleen de Poké Ball-versie,
+// geen Master Ball. Pokémon-kaarten van dezelfde rarities hebben beide.
+function cardEligibleForMasterball(card) {
+  if (
+    card.category === "Trainer" &&
+    (card.rarity === "Common" || card.rarity === "Uncommon")
+  ) {
+    return false;
+  }
+  return true;
+}
+
 // --- URL helpers ---
 
 function getSetIdFromUrl() {
@@ -134,19 +156,22 @@ function getVariants(card) {
     variants.push({ key: "normal", label: "Normal", manual: false });
 
   // Handmatige extra's, alleen als deze set ze heeft aangevinkt in my-sets.js
-  if (currentSetConfig?.pokeball) {
-    variants.push({
-      key: "pokeball",
-      label: MANUAL_VARIANT_LABELS.pokeball,
-      manual: true,
-    });
-  }
-  if (currentSetConfig?.masterball) {
-    variants.push({
-      key: "masterball",
-      label: MANUAL_VARIANT_LABELS.masterball,
-      manual: true,
-    });
+  // EN de kaart een rarity/categorie heeft die deze patronen ook echt kan hebben.
+  if (cardEligibleForManualVariants(card)) {
+    if (currentSetConfig?.pokeball) {
+      variants.push({
+        key: "pokeball",
+        label: MANUAL_VARIANT_LABELS.pokeball,
+        manual: true,
+      });
+    }
+    if (currentSetConfig?.masterball && cardEligibleForMasterball(card)) {
+      variants.push({
+        key: "masterball",
+        label: MANUAL_VARIANT_LABELS.masterball,
+        manual: true,
+      });
+    }
   }
 
   return variants;

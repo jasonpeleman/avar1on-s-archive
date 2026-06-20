@@ -9,6 +9,24 @@ const submitBtn = document.getElementById("submitBtn");
 const messageEl = document.getElementById("loginMessage");
 const tabs = document.querySelectorAll(".login-tab");
 
+// --- Wachtwoord tonen/verbergen ---
+
+const passwordInput = document.getElementById("password");
+const passwordToggle = document.getElementById("passwordToggle");
+const eyeOpen = passwordToggle.querySelector(".eye-open");
+const eyeClosed = passwordToggle.querySelector(".eye-closed");
+
+passwordToggle.addEventListener("click", () => {
+  const isHidden = passwordInput.type === "password";
+  passwordInput.type = isHidden ? "text" : "password";
+  eyeOpen.style.display = isHidden ? "none" : "block";
+  eyeClosed.style.display = isHidden ? "block" : "none";
+  passwordToggle.setAttribute(
+    "aria-label",
+    isHidden ? "Verberg wachtwoord" : "Toon wachtwoord",
+  );
+});
+
 // --- Als er al een sessie is, meteen doorsturen naar de homepage ---
 
 async function checkExistingSession() {

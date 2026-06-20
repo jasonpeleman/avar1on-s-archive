@@ -50,10 +50,11 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 120px;
+  height: 64px;
   position: sticky;
   top: 0;
   z-index: 100;
+  gap: 1rem;
 }
 
 .logo {
@@ -63,7 +64,7 @@ header {
 }
 
 .logo img {
-  height: 100px;
+  height: 40px;
   width: auto;
   display: block;
 }
@@ -123,6 +124,7 @@ header {
 .home-hero img.hero-logo {
   height: 140px;
   width: auto;
+  max-width: 100%;
   margin: 0 auto 4px;
   display: block;
 }
@@ -205,10 +207,12 @@ header {
 .set-card:hover {
   background: var(--card-hover);
   transform: translateY(-2px);
+  box-shadow: var(--shadow);
   border-color: var(--border);
 }
 
 .set-logo-wrap {
+  background: rgba(255, 255, 255, 0.04);
   border-radius: 8px;
   aspect-ratio: 16 / 9;
   display: flex;
@@ -257,14 +261,14 @@ header {
 
 .set-progress {
   height: 100%;
-  background: var(--orange);
+  background: var(--green);
   border-radius: 999px;
   transition: width 0.4s;
 }
 
 .set-progress-label {
   font-size: 11px;
-  color: var(--orange);
+  color: var(--green);
   font-weight: 500;
 }
 
@@ -275,4 +279,140 @@ header {
   color: var(--text3);
   padding: 4rem;
   font-size: 13px;
+}
+
+/* ============================================
+   RESPONSIVE — TABLET (≤ 900px)
+   ============================================ */
+@media (max-width: 900px) {
+  .sets-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 14px;
+  }
+
+  .home-hero {
+    padding: 1.5rem 1.5rem 1.5rem;
+  }
+
+  .home-content {
+    padding: 1.5rem;
+  }
+}
+
+/* ============================================
+   RESPONSIVE — ≤ 650px: logo neemt volle breedte
+   in plaats van vaste hoogte (anders te klein/te groot
+   afhankelijk van de logo-verhoudingen)
+   ============================================ */
+@media (max-width: 650px) {
+  .home-hero img.hero-logo {
+    height: auto;
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+/* ============================================
+   RESPONSIVE — MOBIEL (≤ 600px)
+   ============================================ */
+@media (max-width: 600px) {
+  body {
+    font-size: 13px;
+  }
+
+  /* Header: logo + stats onder elkaar i.p.v. naast elkaar */
+  header {
+    flex-wrap: wrap;
+    height: auto;
+    padding: 10px 1rem;
+    row-gap: 8px;
+  }
+
+  .logo img {
+    height: 32px;
+  }
+
+  .header-stats {
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .header-stat .val {
+    font-size: 14px;
+  }
+
+  .header-stat .lbl {
+    font-size: 9px;
+  }
+
+  .logout-btn {
+    font-size: 11px;
+    padding: 5px 10px;
+  }
+
+  /* Hero compacter */
+  .home-hero {
+    padding: 1.25rem 1rem;
+  }
+
+  .home-hero p {
+    font-size: 11px;
+  }
+
+  .home-content {
+    padding: 1rem;
+  }
+
+  /* Series filter: horizontaal scrollen i.p.v. wrappen,
+     zodat het geen hele scherm hoogte inneemt */
+  .series-filter {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+    margin-bottom: 1rem;
+  }
+
+  .series-label {
+    flex-shrink: 0;
+  }
+
+  .series-btn {
+    flex-shrink: 0;
+  }
+
+  /* Sets grid: 2 kolommen op telefoon i.p.v. auto-fill
+     (auto-fill met minmax 220px zou maar 1 kolom geven op smalle schermen) */
+  .sets-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .set-card {
+    padding: 10px 10px 10px;
+    border-radius: 12px;
+  }
+
+  .set-card-name {
+    font-size: 12px;
+  }
+
+  .set-card-meta {
+    font-size: 10px;
+    margin-bottom: 6px;
+  }
+}
+
+/* ============================================
+   RESPONSIVE — KLEINE TELEFOON (≤ 380px)
+   ============================================ */
+@media (max-width: 380px) {
+  .sets-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .header-stats {
+    gap: 0.6rem;
+  }
 }

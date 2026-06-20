@@ -88,10 +88,44 @@ body {
   font-size: 14px;
   outline: none;
   transition: border-color 0.15s;
+  width: 100%;
 }
 
 .login-input:focus {
   border-color: var(--accent);
+}
+
+.password-wrap {
+  position: relative;
+  display: flex;
+}
+
+.password-wrap .login-input {
+  padding-right: 42px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text3);
+  transition: color 0.15s;
+}
+
+.password-toggle:hover {
+  color: var(--text2);
+}
+
+.eye-icon {
+  pointer-events: none;
 }
 
 .login-submit {
