@@ -269,14 +269,14 @@ header {
 
 .set-progress {
   height: 100%;
-  background: var(--green);
+  background: var(--orange);
   border-radius: 999px;
   transition: width 0.4s;
 }
 
 .set-progress-label {
   font-size: 11px;
-  color: var(--green);
+  color: var(--orange);
   font-weight: 500;
 }
 

@@ -3,8 +3,22 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="color-scheme" content="light" />
+    <meta name="color-scheme" content="dark" />
     <title>Avar1on's Archive</title>
+
+    <!-- PWA: maakt de site installeerbaar als app op een telefoon -->
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#0a0a0a" />
+    <link rel="icon" href="assets/icons/favicon.png" />
+    <!-- iOS leest het manifest niet volledig, dus eigen Apple-tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="apple-mobile-web-app-title" content="Archive" />
+    <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
+
     <link rel="stylesheet" href="style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -64,5 +78,15 @@
     <script src="supabase-config.js"></script>
     <script src="my-sets.js"></script>
     <script src="app.js"></script>
+
+    <!-- PWA: service worker registreren (maakt installeren mogelijk) -->
+    <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("service-worker.js").catch(() => {
+          // Stil falen — de site werkt ook prima zonder service worker,
+          // dit is alleen nodig voor de "installeer als app"-functie.
+        });
+      }
+    </script>
   </body>
 </html>
