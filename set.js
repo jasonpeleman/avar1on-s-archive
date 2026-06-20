@@ -48,7 +48,7 @@ function getSetIdFromUrl() {
 // --- Owned-data ophalen/opslaan via Supabase ---
 
 async function loadOwned(setId) {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseClient
     .from("owned_cards")
     .select("card_id, variant")
     .eq("user_id", currentUser.id)
@@ -74,7 +74,7 @@ async function toggleVariant(cardId, variant) {
 
   if (ownedMap[key]) {
     // Uitvinken: rij verwijderen uit Supabase
-    const { error } = await supabase
+    const { error } = await supabaseClient
       .from("owned_cards")
       .delete()
       .eq("user_id", currentUser.id)
@@ -88,7 +88,7 @@ async function toggleVariant(cardId, variant) {
     delete ownedMap[key];
   } else {
     // Aanvinken: rij toevoegen aan Supabase
-    const { error } = await supabase.from("owned_cards").insert({
+    const { error } = await supabaseClient.from("owned_cards").insert({
       user_id: currentUser.id,
       set_id: currentSetId,
       card_id: cardId,
@@ -104,7 +104,7 @@ async function toggleVariant(cardId, variant) {
 }
 
 async function resetAllOwned() {
-  const { error } = await supabase
+  const { error } = await supabaseClient
     .from("owned_cards")
     .delete()
     .eq("user_id", currentUser.id)
@@ -347,7 +347,7 @@ async function loadCards(setId) {
 
 async function updateGlobalStats() {
   try {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
       .from("owned_cards")
       .select("card_id, variant")
       .eq("user_id", currentUser.id);
@@ -405,7 +405,7 @@ function initLogout() {
   const btn = document.getElementById("logoutBtn");
   if (!btn) return;
   btn.addEventListener("click", async () => {
-    await supabase.auth.signOut();
+    await supabaseClient.auth.signOut();
     window.location.href = "login.html";
   });
 }

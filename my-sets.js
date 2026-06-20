@@ -10,4 +10,10 @@
 // ============================================
 
 // const MY_SETS = ["sv01", "sv06", "sv08.5", "sv10.5w", "me03"];
-const MY_SETS = ["me03", "sv10.5w", "sv08.5", "sv06", "sv01"];
+const MY_SETS = [
+  { id: "me03" },
+  { id: "sv10.5w" },
+  { id: "sv08.5", pokeball: true, masterball: true },
+  { id: "sv06" },
+  { id: "sv01" },
+];

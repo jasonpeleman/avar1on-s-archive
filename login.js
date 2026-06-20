@@ -14,7 +14,7 @@ const tabs = document.querySelectorAll(".login-tab");
 async function checkExistingSession() {
   const {
     data: { session },
-  } = await supabase.auth.getSession();
+  } = await supabaseClient.auth.getSession();
   if (session) window.location.href = "index.html";
 }
 checkExistingSession();
@@ -46,14 +46,14 @@ form.addEventListener("submit", async (e) => {
 
   try {
     if (mode === "signup") {
-      const { error } = await supabase.auth.signUp({ email, password });
+      const { error } = await supabaseClient.auth.signUp({ email, password });
       if (error) throw error;
 
       messageEl.textContent =
         "Account aangemaakt! Check je e-mail om te bevestigen, log dan in.";
       messageEl.className = "login-message success";
     } else {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { error } = await supabaseClient.auth.signInWithPassword({
         email,
         password,
       });

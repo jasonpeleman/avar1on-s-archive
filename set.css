@@ -97,7 +97,7 @@
 
 .detail-progress-bar {
   height: 100%;
-  background: var(--green);
+  background: var(--orange);
   border-radius: 999px;
   transition: width 0.4s;
 }
@@ -105,7 +105,7 @@
 .detail-pct {
   font-size: 14px;
   font-weight: 600;
-  color: var(--green);
+  color: var(--orange);
   min-width: 44px;
   text-align: right;
 }
@@ -189,6 +189,16 @@
 
 /* Goudgele rand als alle varianten aangevinkt zijn */
 .poke-card.owned {
+  .variant-btn.checked .variant-check {
+    background: var(--orange);
+    border-color: var(--orange);
+    color: var(--bg);
+  }
+  .variant-btn.checked {
+    background: rgba(212, 120, 45, 0.15);
+    border-color: var(--orange);
+    color: var(--orange);
+  }
   border-color: var(--accent);
   background: rgba(226, 185, 111, 0.05);
 }

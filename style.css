@@ -22,7 +22,8 @@
   --text: #f0ede8; /* hoofdtekst */
   --text2: #a8a39a; /* subtekst */
   --text3: #6b665f; /* placeholder / muted tekst */
-  --green: #2dd4a0; /* voortgangskleur */
+  --green: #2dd4a0; /* vinkjes */
+  --orange: #e8731c; /* voortgangsbalk*/
   --border: rgba(232, 115, 28, 0.18);
   --border2: rgba(255, 255, 255, 0.06);
   --shadow: 0 4px 24px rgba(0, 0, 0, 0.6);
@@ -49,7 +50,7 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 64px;
+  height: 120px;
   position: sticky;
   top: 0;
   z-index: 100;
@@ -62,7 +63,7 @@ header {
 }
 
 .logo img {
-  height: 40px;
+  height: 100px;
   width: auto;
   display: block;
 }
@@ -204,12 +205,10 @@ header {
 .set-card:hover {
   background: var(--card-hover);
   transform: translateY(-2px);
-  box-shadow: var(--shadow);
   border-color: var(--border);
 }
 
 .set-logo-wrap {
-  background: rgba(255, 255, 255, 0.04);
   border-radius: 8px;
   aspect-ratio: 16 / 9;
   display: flex;
@@ -258,14 +257,14 @@ header {
 
 .set-progress {
   height: 100%;
-  background: var(--green);
+  background: var(--orange);
   border-radius: 999px;
   transition: width 0.4s;
 }
 
 .set-progress-label {
   font-size: 11px;
-  color: var(--green);
+  color: var(--orange);
   font-weight: 500;
 }
 

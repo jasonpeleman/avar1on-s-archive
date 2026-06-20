@@ -19,7 +19,7 @@ let ownedMap = {};
 // --- Owned-data ophalen uit Supabase (één keer, voor alle sets) ---
 
 async function loadOwnedFromSupabase() {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseClient
     .from("owned_cards")
     .select("card_id, variant")
     .eq("user_id", currentUser.id);
@@ -149,7 +149,7 @@ function initLogout() {
   const btn = document.getElementById("logoutBtn");
   if (!btn) return;
   btn.addEventListener("click", async () => {
-    await supabase.auth.signOut();
+    await supabaseClient.auth.signOut();
     window.location.href = "login.html";
   });
 }
