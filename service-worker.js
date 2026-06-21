@@ -10,14 +10,8 @@
 //  vers blijven, anders zie je oude voortgang of data.
 // ============================================
 
-const CACHE_NAME = "avar1ons-archive-v1";
+const CACHE_NAME = "avar1ons-archive-v2";
 
-const PRECACHE_FILES = [
-  "index.html",
-  "style.css",
-  "assets/logo.png",
-  "assets/logo2.png",
-];
 
 // Bij installatie: vaste bestanden alvast opslaan
 self.addEventListener("install", (event) => {
