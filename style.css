@@ -16,7 +16,7 @@
    (inputs, scrollbars) automatisch aanpassen aan systeem-lichte modus,
    wat niet bij dit ontwerp past. */
 :root {
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 /* === CSS VARIABELEN (kleuren, fonts, etc.) === */
@@ -31,7 +31,6 @@
   --text2: #a8a39a; /* subtekst */
   --text3: #6b665f; /* placeholder / muted tekst */
   --green: #2dd4a0; /* vinkjes */
-  --orange: #e8731c; /* voortgangsbalk*/
   --border: rgba(232, 115, 28, 0.18);
   --border2: rgba(255, 255, 255, 0.06);
   --shadow: 0 4px 24px rgba(0, 0, 0, 0.6);
@@ -268,14 +267,14 @@ header {
 
 .set-progress {
   height: 100%;
-  background: var(--orange);
+  background: var(--accent);
   border-radius: 999px;
   transition: width 0.4s;
 }
 
 .set-progress-label {
   font-size: 11px;
-  color: var(--orange);
+  color: var(--accent);
   font-weight: 500;
 }
 

@@ -97,7 +97,7 @@
 
 .detail-progress-bar {
   height: 100%;
-  background: var(--orange);
+  background: var(--accent);
   border-radius: 999px;
   transition: width 0.4s;
 }
@@ -105,7 +105,7 @@
 .detail-pct {
   font-size: 14px;
   font-weight: 600;
-  color: var(--orange);
+  color: var(--accent);
   min-width: 44px;
   text-align: right;
 }
@@ -189,16 +189,6 @@
 
 /* Goudgele rand als alle varianten aangevinkt zijn */
 .poke-card.owned {
-  .variant-btn.checked .variant-check {
-    background: var(--orange);
-    border-color: var(--orange);
-    color: var(--bg);
-  }
-  .variant-btn.checked {
-    background: rgba(212, 120, 45, 0.15);
-    border-color: var(--orange);
-    color: var(--orange);
-  }
   border-color: var(--accent);
   background: rgba(226, 185, 111, 0.05);
 }
@@ -227,9 +217,51 @@
   padding: 10px 12px 12px;
 }
 
+.poke-card-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
 .poke-card-num {
   font-size: 11px;
   color: var(--text3);
+}
+
+.poke-card-price {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--green);
+  white-space: nowrap;
+  display: none; /* standaard verborgen, getoond via .show-prices op de grid */
+}
+
+.cards-grid.show-prices .poke-card-price {
+  display: block;
+}
+
+.price-toggle-btn {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  padding: 5px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border2);
+  background: transparent;
+  color: var(--text2);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.price-toggle-btn:hover {
+  color: var(--text);
+  border-color: var(--border);
+}
+
+.price-toggle-btn.active {
+  background: rgba(45, 212, 160, 0.15);
+  border-color: var(--green);
+  color: var(--green);
 }
 
 .poke-card-name {
@@ -502,6 +534,24 @@
   border-bottom: 1px solid var(--border2);
   flex-wrap: wrap;
 }
+
+.delete-set-btn {
+  margin-left: auto;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 80, 80, 0.2);
+  background: transparent;
+  color: rgba(255, 100, 100, 0.7);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.delete-set-btn:hover {
+  border-color: rgba(255, 80, 80, 0.5);
+  color: rgb(255, 100, 100);
+}
  
 .variant-settings-label {
   font-size: 12px;
@@ -572,9 +622,16 @@
     padding: 0.75rem 1rem;
     gap: 1rem;
   }
- 
+
   .toggle-text {
     font-size: 12px;
+  }
+
+  .delete-set-btn {
+    margin-left: 0;
+    width: 100%;
+    text-align: center;
+    order: 10;
   }
 }
  
