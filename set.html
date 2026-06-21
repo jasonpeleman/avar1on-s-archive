@@ -15,8 +15,8 @@
   <meta name="apple-mobile-web-app-title" content="Archive">
   <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
 
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="set.css">
+  <link rel="stylesheet" href="style.css?v=1">
+  <link rel="stylesheet" href="set.css?v=1">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -64,6 +64,23 @@
         <div class="lbl">Totaal</div>
       </div>
     </div>
+  </div>
+
+  <!-- VARIANT-INSTELLINGEN: Pokéball/Masterball aan/uit voor deze set.
+       Niet uit de API af te leiden (zie comments in set.js), dus
+       hier handmatig instelbaar per set. -->
+  <div class="variant-settings">
+    <span class="variant-settings-label">Extra varianten:</span>
+    <label class="toggle-switch">
+      <input type="checkbox" id="pokeballToggle">
+      <span class="toggle-slider"></span>
+      <span class="toggle-text">Poké Ball Pattern</span>
+    </label>
+    <label class="toggle-switch">
+      <input type="checkbox" id="masterballToggle">
+      <span class="toggle-slider"></span>
+      <span class="toggle-text">Master Ball Pattern</span>
+    </label>
   </div>
 
   <!-- VOORTGANGSBALK -->

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reset — Avar1on's Archive</title>
+  <link rel="stylesheet" href="style.css?v=1">
+</head>
+<body style="display:flex;align-items:center;justify-content:center;min-height:100vh;text-align:center;padding:2rem">
+  <div>
+    <h2 style="font-family:'Cinzel',serif;color:var(--accent);margin-bottom:1rem">Opschonen...</h2>
+    <p id="status" style="color:var(--text2)">Bezig met opruimen van lokale gegevens.</p>
+    <p style="margin-top:1.5rem">
+      <a href="login.html" style="color:var(--accent)">Ga naar de inlogpagina</a>
+    </p>
+  </div>
+
+  <script>
+    // ============================================
+    //  AVAR1ON'S ARCHIVE — reset.html
+    //  Eenmalige opschoonpagina bij login-problemen:
+    //  verwijdert lokale opslag, sessiegegevens, en
+    //  geregistreerde service workers, zodat een
+    //  eventuele corrupte/verouderde staat verdwijnt.
+    //  Niet gelinkt vanuit de normale site — alleen
+    //  handmatig te openen als troubleshoot-stap.
+    // ============================================
+
+    async function resetAlles() {
+      try {
+        // Lokale opslag leegmaken (redirect-teller, eventuele oude data)
+        localStorage.clear();
+        sessionStorage.clear();
+
+        // Alle geregistreerde service workers verwijderen
+        if ('serviceWorker' in navigator) {
+          const registrations = await navigator.serviceWorker.getRegistrations();
+          for (const reg of registrations) await reg.unregister();
+        }
+
+        // Alle caches verwijderen (van de service worker)
+        if ('caches' in window) {
+          const keys = await caches.keys();
+          for (const key of keys) await caches.delete(key);
+        }
+
+        document.getElementById('status').textContent =
+          'Klaar. Je kan nu opnieuw inloggen.';
+      } catch (e) {
+        document.getElementById('status').textContent =
+          'Opschonen gedeeltelijk gelukt. Probeer ook handmatig browsergegevens te wissen.';
+      }
+    }
+
+    resetAlles();
+  </script>
+</body>
+</html>

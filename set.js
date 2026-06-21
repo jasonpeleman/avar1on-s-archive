@@ -393,6 +393,39 @@ function initReset() {
   });
 }
 
+// --- Pokéball/Masterball schakelaars ---
+// Tonen de huidige stand (uit currentSetConfig) en slaan wijzigingen
+// meteen op in de my_sets tabel. Na een wijziging worden de kaarten
+// opnieuw gerenderd zodat de extra variant-knoppen verschijnen/verdwijnen.
+
+function initVariantToggles() {
+  const pokeballToggle = document.getElementById('pokeballToggle');
+  const masterballToggle = document.getElementById('masterballToggle');
+
+  pokeballToggle.checked = !!currentSetConfig?.pokeball;
+  masterballToggle.checked = !!currentSetConfig?.masterball;
+
+  pokeballToggle.addEventListener('change', () => updateVariantSetting('pokeball', pokeballToggle.checked));
+  masterballToggle.addEventListener('change', () => updateVariantSetting('masterball', masterballToggle.checked));
+}
+
+async function updateVariantSetting(field, value) {
+  const { error } = await supabaseClient
+    .from('my_sets')
+    .update({ [field]: value })
+    .eq('user_id', currentUser.id)
+    .eq('set_id', currentSetId);
+
+  if (error) {
+    console.error(`Kon ${field} niet bijwerken:`, error);
+    return;
+  }
+
+  currentSetConfig[field] = value;
+  updateProgress();
+  renderCards();
+}
+
 // --- Uitloggen ---
 
 function initLogout() {
@@ -433,6 +466,7 @@ async function init() {
 
   initFilters();
   initReset();
+  initVariantToggles();
 
   await loadOwned(currentSetId);
 
