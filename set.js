@@ -12,38 +12,38 @@
 //  vink alleen aan wat je daadwerkelijk bezit.
 // ============================================
 
-const API = "https://api.tcgdex.net/v2/en";
+const API = 'https://api.tcgdex.net/v2/en';
 
-let currentSetId = "";
-let currentSetConfig = null; // de entry uit MY_SETS voor deze set
+let currentSetId = '';
+let currentSetConfig = null; // { pokeball, masterball } uit de my_sets tabel in Supabase
 let currentUser = null;
 let allCards = [];
-let currentFilter = "all";
+let currentFilter = 'all';
 
 // owned = Map van "cardId:variant" -> true, alleen voor de huidige set.
 let ownedMap = {};
 
 // Volgorde + labels voor de varianten die TCGdex levert
-const VARIANT_ORDER = ["normal", "reverse", "holo", "firstEdition"];
+const VARIANT_ORDER = ['normal', 'reverse', 'holo', 'firstEdition'];
 const VARIANT_LABELS = {
-  normal: "Normal",
-  reverse: "Reverse Holo",
-  holo: "Holo",
-  firstEdition: "1st Edition",
+  normal:       'Normal',
+  reverse:      'Reverse Holo',
+  holo:         'Holo',
+  firstEdition: '1st Edition',
 };
 
 // Handmatige varianten — alleen toegevoegd als de set dit aangeeft
 // in my-sets.js (pokeball: true / masterball: true)
 const MANUAL_VARIANT_LABELS = {
-  pokeball: "Poké Ball Pattern",
-  masterball: "Master Ball Pattern",
+  pokeball:   'Poké Ball Pattern',
+  masterball: 'Master Ball Pattern',
 };
 
 // Pokéball/Masterball patronen verschijnen alleen op deze rarities
 // (bevestigd voor Prismatic Evolutions: Common/Uncommon/Rare kaarten
 // hebben alle drie de varianten; ex-kaarten (Double Rare en hoger)
 // hebben deze patronen NIET).
-const MANUAL_VARIANT_RARITIES = ["Common", "Uncommon", "Rare"];
+const MANUAL_VARIANT_RARITIES = ['Common', 'Uncommon', 'Rare'];
 
 function cardEligibleForManualVariants(card) {
   return MANUAL_VARIANT_RARITIES.includes(card.rarity);
@@ -52,10 +52,7 @@ function cardEligibleForManualVariants(card) {
 // Trainer-kaarten van Common/Uncommon hebben alleen de Poké Ball-versie,
 // geen Master Ball. Pokémon-kaarten van dezelfde rarities hebben beide.
 function cardEligibleForMasterball(card) {
-  if (
-    card.category === "Trainer" &&
-    (card.rarity === "Common" || card.rarity === "Uncommon")
-  ) {
+  if (card.category === 'Trainer' && (card.rarity === 'Common' || card.rarity === 'Uncommon')) {
     return false;
   }
   return true;
@@ -64,78 +61,72 @@ function cardEligibleForMasterball(card) {
 // --- URL helpers ---
 
 function getSetIdFromUrl() {
-  return new URLSearchParams(window.location.search).get("id");
+  return new URLSearchParams(window.location.search).get('id');
 }
 
 // --- Owned-data ophalen/opslaan via Supabase ---
 
 async function loadOwned(setId) {
   const { data, error } = await supabaseClient
-    .from("owned_cards")
-    .select("card_id, variant")
-    .eq("user_id", currentUser.id)
-    .eq("set_id", setId);
+    .from('owned_cards')
+    .select('card_id, variant')
+    .eq('user_id', currentUser.id)
+    .eq('set_id', setId);
 
   if (error) {
-    console.error("Kon vinkjes niet laden:", error);
+    console.error('Kon vinkjes niet laden:', error);
     return;
   }
 
   ownedMap = {};
-  data.forEach((row) => {
-    ownedMap[row.card_id + ":" + row.variant] = true;
+  data.forEach(row => {
+    ownedMap[row.card_id + ':' + row.variant] = true;
   });
 }
 
 function isVariantOwned(cardId, variant) {
-  return !!ownedMap[cardId + ":" + variant];
+  return !!ownedMap[cardId + ':' + variant];
 }
 
 async function toggleVariant(cardId, variant) {
-  const key = cardId + ":" + variant;
+  const key = cardId + ':' + variant;
 
   if (ownedMap[key]) {
     // Uitvinken: rij verwijderen uit Supabase
     const { error } = await supabaseClient
-      .from("owned_cards")
+      .from('owned_cards')
       .delete()
-      .eq("user_id", currentUser.id)
-      .eq("card_id", cardId)
-      .eq("variant", variant);
+      .eq('user_id', currentUser.id)
+      .eq('card_id', cardId)
+      .eq('variant', variant);
 
-    if (error) {
-      console.error("Kon vinkje niet verwijderen:", error);
-      return;
-    }
+    if (error) { console.error('Kon vinkje niet verwijderen:', error); return; }
     delete ownedMap[key];
+
   } else {
     // Aanvinken: rij toevoegen aan Supabase
-    const { error } = await supabaseClient.from("owned_cards").insert({
-      user_id: currentUser.id,
-      set_id: currentSetId,
-      card_id: cardId,
-      variant: variant,
-    });
+    const { error } = await supabaseClient
+      .from('owned_cards')
+      .insert({
+        user_id: currentUser.id,
+        set_id: currentSetId,
+        card_id: cardId,
+        variant: variant,
+      });
 
-    if (error) {
-      console.error("Kon vinkje niet opslaan:", error);
-      return;
-    }
+    if (error) { console.error('Kon vinkje niet opslaan:', error); return; }
     ownedMap[key] = true;
   }
 }
 
 async function resetAllOwned() {
   const { error } = await supabaseClient
-    .from("owned_cards")
+    .from('owned_cards')
     .delete()
-    .eq("user_id", currentUser.id)
-    .eq("set_id", currentSetId);
+    .eq('user_id', currentUser.id)
+    .eq('set_id', currentSetId);
 
-  if (error) {
-    console.error("Kon set niet resetten:", error);
-    return;
-  }
+  if (error) { console.error('Kon set niet resetten:', error); return; }
   ownedMap = {};
 }
 
@@ -147,30 +138,20 @@ function getVariants(card) {
   const v = card.variants || {};
   const variants = [];
 
-  VARIANT_ORDER.forEach((key) => {
-    if (v[key])
-      variants.push({ key, label: VARIANT_LABELS[key], manual: false });
+  VARIANT_ORDER.forEach(key => {
+    if (v[key]) variants.push({ key, label: VARIANT_LABELS[key], manual: false });
   });
 
-  if (variants.length === 0)
-    variants.push({ key: "normal", label: "Normal", manual: false });
+  if (variants.length === 0) variants.push({ key: 'normal', label: 'Normal', manual: false });
 
   // Handmatige extra's, alleen als deze set ze heeft aangevinkt in my-sets.js
   // EN de kaart een rarity/categorie heeft die deze patronen ook echt kan hebben.
   if (cardEligibleForManualVariants(card)) {
     if (currentSetConfig?.pokeball) {
-      variants.push({
-        key: "pokeball",
-        label: MANUAL_VARIANT_LABELS.pokeball,
-        manual: true,
-      });
+      variants.push({ key: 'pokeball', label: MANUAL_VARIANT_LABELS.pokeball, manual: true });
     }
     if (currentSetConfig?.masterball && cardEligibleForMasterball(card)) {
-      variants.push({
-        key: "masterball",
-        label: MANUAL_VARIANT_LABELS.masterball,
-        manual: true,
-      });
+      variants.push({ key: 'masterball', label: MANUAL_VARIANT_LABELS.masterball, manual: true });
     }
   }
 
@@ -181,16 +162,14 @@ function getVariants(card) {
 
 function countTotals(cards) {
   let total = 0;
-  cards.forEach((card) => {
-    total += getVariants(card).length;
-  });
+  cards.forEach(card => { total += getVariants(card).length; });
   return total;
 }
 
 function countOwned(cards) {
   let n = 0;
-  cards.forEach((card) => {
-    getVariants(card).forEach((v) => {
+  cards.forEach(card => {
+    getVariants(card).forEach(v => {
       if (isVariantOwned(card.id, v.key)) n++;
     });
   });
@@ -213,26 +192,26 @@ function sortCards(cards) {
 function updateProgress() {
   const total = countTotals(allCards);
   const n = countOwned(allCards);
-  const pct = total ? Math.round((n / total) * 100) : 0;
+  const pct = total ? Math.round(n / total * 100) : 0;
 
-  document.getElementById("detailBar").style.width = pct + "%";
-  document.getElementById("detailPct").textContent = pct + "%";
-  document.getElementById("statOwned").textContent = n;
-  document.getElementById("statMissing").textContent = total - n;
-  document.getElementById("statTotal").textContent = total;
+  document.getElementById('detailBar').style.width = pct + '%';
+  document.getElementById('detailPct').textContent = pct + '%';
+  document.getElementById('statOwned').textContent = n;
+  document.getElementById('statMissing').textContent = total - n;
+  document.getElementById('statTotal').textContent = total;
 }
 
 // --- Kaarten renderen ---
 
 function renderCards() {
-  const grid = document.getElementById("cardsGrid");
+  const grid = document.getElementById('cardsGrid');
 
-  const filtered = allCards.filter((card) => {
+  const filtered = allCards.filter(card => {
     const variants = getVariants(card);
-    const hasAny = variants.some((v) => isVariantOwned(card.id, v.key));
-    const hasAll = variants.every((v) => isVariantOwned(card.id, v.key));
-    if (currentFilter === "owned") return hasAny;
-    if (currentFilter === "missing") return !hasAll;
+    const hasAny = variants.some(v => isVariantOwned(card.id, v.key));
+    const hasAll = variants.every(v => isVariantOwned(card.id, v.key));
+    if (currentFilter === 'owned')   return hasAny;
+    if (currentFilter === 'missing') return !hasAll;
     return true;
   });
 
@@ -241,45 +220,42 @@ function renderCards() {
     return;
   }
 
-  grid.innerHTML = "";
+  grid.innerHTML = '';
 
-  filtered.forEach((card) => {
+  filtered.forEach(card => {
     const variants = getVariants(card);
-    const allOwned = variants.every((v) => isVariantOwned(card.id, v.key));
-    const someOwned = variants.some((v) => isVariantOwned(card.id, v.key));
+    const allOwned = variants.every(v => isVariantOwned(card.id, v.key));
+    const someOwned = variants.some(v => isVariantOwned(card.id, v.key));
 
-    const div = document.createElement("div");
-    div.className = "poke-card";
-    if (allOwned) div.classList.add("owned");
-    else if (someOwned) div.classList.add("partial");
+    const div = document.createElement('div');
+    div.className = 'poke-card';
+    if (allOwned) div.classList.add('owned');
+    else if (someOwned) div.classList.add('partial');
     div.dataset.id = card.id;
 
-    const variantHTML = variants
-      .map((v) => {
-        const checked = isVariantOwned(card.id, v.key);
-        return `
+    const variantHTML = variants.map(v => {
+      const checked = isVariantOwned(card.id, v.key);
+      return `
         <button
-          class="variant-btn${checked ? " checked" : ""}${v.manual ? " manual" : ""}"
+          class="variant-btn${checked ? ' checked' : ''}${v.manual ? ' manual' : ''}"
           data-card="${card.id}"
           data-variant="${v.key}"
         >
-          <span class="variant-check">${checked ? "✓" : ""}</span>
+          <span class="variant-check">${checked ? '✓' : ''}</span>
           <span class="variant-label">${v.label}</span>
         </button>
       `;
-      })
-      .join("");
+    }).join('');
 
     div.innerHTML = `
-      ${
-        card.image
-          ? `<img src="${card.image}/low.webp" alt="${card.name}" loading="lazy">`
-          : '<div class="card-img-placeholder"></div>'
+      ${card.image
+        ? `<img src="${card.image}/low.webp" alt="${card.name}" loading="lazy">`
+        : '<div class="card-img-placeholder"></div>'
       }
       <div class="poke-card-info">
-        <div class="poke-card-num">${card.localId} / ${card.set?.cardCount?.official || "?"}</div>
+        <div class="poke-card-num">${card.localId} / ${card.set?.cardCount?.official || '?'}</div>
         <div class="poke-card-name">${card.name}</div>
-        <div class="poke-card-rarity">${card.rarity || ""}</div>
+        <div class="poke-card-rarity">${card.rarity || ''}</div>
         <div class="variant-row">${variantHTML}</div>
       </div>
     `;
@@ -288,8 +264,8 @@ function renderCards() {
   });
 
   // Eventlisteners op variant-knoppen
-  grid.querySelectorAll(".variant-btn").forEach((btn) => {
-    btn.addEventListener("click", async (e) => {
+  grid.querySelectorAll('.variant-btn').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
       e.stopPropagation();
       btn.disabled = true; // dubbelklikken tijdens opslaan voorkomen
 
@@ -298,22 +274,22 @@ function renderCards() {
       await toggleVariant(cardId, variant);
 
       const checked = isVariantOwned(cardId, variant);
-      btn.classList.toggle("checked", checked);
-      btn.querySelector(".variant-check").textContent = checked ? "✓" : "";
+      btn.classList.toggle('checked', checked);
+      btn.querySelector('.variant-check').textContent = checked ? '✓' : '';
       btn.disabled = false;
 
       const cardEl = document.querySelector(`.poke-card[data-id="${cardId}"]`);
       if (cardEl) {
-        const card = allCards.find((c) => c.id === cardId);
+        const card = allCards.find(c => c.id === cardId);
         const variants = getVariants(card);
-        const allChecked = variants.every((v) => isVariantOwned(cardId, v.key));
-        const someChecked = variants.some((v) => isVariantOwned(cardId, v.key));
-        cardEl.classList.toggle("owned", allChecked);
-        cardEl.classList.toggle("partial", someChecked && !allChecked);
+        const allChecked = variants.every(v => isVariantOwned(cardId, v.key));
+        const someChecked = variants.some(v => isVariantOwned(cardId, v.key));
+        cardEl.classList.toggle('owned', allChecked);
+        cardEl.classList.toggle('partial', someChecked && !allChecked);
       }
 
       updateProgress();
-      if (currentFilter !== "all") renderCards();
+      if (currentFilter !== 'all') renderCards();
     });
   });
 }
@@ -326,20 +302,20 @@ async function loadSetInfo(setId) {
     const set = await r.json();
 
     document.title = `${set.name} — Avar1on's Archive`;
-    document.getElementById("detailName").textContent = set.name;
-    document.getElementById("detailMeta").textContent =
-      `${set.serie?.name || ""} · ${set.id} · ${set.cardCount?.total || "?"} kaarten`;
+    document.getElementById('detailName').textContent = set.name;
+    document.getElementById('detailMeta').textContent =
+      `${set.serie?.name || ''} · ${set.id} · ${set.cardCount?.total || '?'} kaarten`;
 
-    const logo = document.getElementById("detailLogo");
+    const logo = document.getElementById('detailLogo');
     if (set.logo) {
-      logo.src = set.logo + ".png";
-      logo.alt = set.name + " logo";
-      logo.style.display = "block";
+      logo.src = set.logo + '.png';
+      logo.alt = set.name + ' logo';
+      logo.style.display = 'block';
     }
 
     return set;
   } catch {
-    document.getElementById("detailName").textContent = "Onbekende set";
+    document.getElementById('detailName').textContent = 'Onbekende set';
     return null;
   }
 }
@@ -353,9 +329,7 @@ async function loadCards(setId) {
 
     const briefCards = set.cards || [];
     const detailed = await Promise.all(
-      briefCards.map((c) =>
-        fetch(`${API}/cards/${c.id}`).then((res) => res.json()),
-      ),
+      briefCards.map(c => fetch(`${API}/cards/${c.id}`).then(res => res.json()))
     );
 
     allCards = sortCards(detailed);
@@ -363,50 +337,45 @@ async function loadCards(setId) {
     updateProgress();
     renderCards();
   } catch {
-    document.getElementById("cardsGrid").innerHTML =
+    document.getElementById('cardsGrid').innerHTML =
       '<div class="empty-state">Kon kaarten niet laden. Controleer je internetverbinding.</div>';
   }
 }
 
-// --- Globale header stats (over alle sets in MY_SETS) ---
+// --- Globale header stats (over alle sets in de my_sets tabel) ---
 
 async function updateGlobalStats() {
   try {
-    const { data, error } = await supabaseClient
-      .from("owned_cards")
-      .select("card_id, variant")
-      .eq("user_id", currentUser.id);
+    const [ownedResult, mySetsResult] = await Promise.all([
+      supabaseClient.from('owned_cards').select('card_id, variant').eq('user_id', currentUser.id),
+      supabaseClient.from('my_sets').select('set_id').eq('user_id', currentUser.id),
+    ]);
 
-    if (error) throw error;
+    if (ownedResult.error) throw ownedResult.error;
+    if (mySetsResult.error) throw mySetsResult.error;
 
     let totalCards = 0;
     const setResults = await Promise.all(
-      MY_SETS.map((entry) =>
-        fetch(`${API}/sets/${entry.id}`)
-          .then((r) => (r.ok ? r.json() : null))
-          .catch(() => null),
-      ),
+      mySetsResult.data.map(entry =>
+        fetch(`${API}/sets/${entry.set_id}`).then(r => r.ok ? r.json() : null).catch(() => null)
+      )
     );
-    setResults.filter(Boolean).forEach((set) => {
-      totalCards += set.cardCount?.total || 0;
-    });
+    setResults.filter(Boolean).forEach(set => { totalCards += set.cardCount?.total || 0; });
 
-    const totalOwned = data.length;
-    const pct = totalCards ? Math.round((totalOwned / totalCards) * 100) : 0;
-    document.getElementById("globalOwned").textContent = totalOwned;
-    document.getElementById("globalPct").textContent = pct + "%";
-  } catch {}
+    const totalOwned = ownedResult.data.length;
+    const pct = totalCards ? Math.round(totalOwned / totalCards * 100) : 0;
+    document.getElementById('globalOwned').textContent = totalOwned;
+    document.getElementById('globalPct').textContent = pct + '%';
+  } catch { }
 }
 
 // --- Filter knoppen ---
 
 function initFilters() {
-  document.querySelectorAll(".filter-btn").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      document
-        .querySelectorAll(".filter-btn")
-        .forEach((b) => b.classList.remove("active"));
-      btn.classList.add("active");
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
       currentFilter = btn.dataset.filter;
       renderCards();
     });
@@ -416,8 +385,8 @@ function initFilters() {
 // --- Reset ---
 
 function initReset() {
-  document.getElementById("resetBtn").addEventListener("click", async () => {
-    if (!confirm("Alle vinkjes voor deze set verwijderen?")) return;
+  document.getElementById('resetBtn').addEventListener('click', async () => {
+    if (!confirm('Alle vinkjes voor deze set verwijderen?')) return;
     await resetAllOwned();
     updateProgress();
     renderCards();
@@ -427,11 +396,11 @@ function initReset() {
 // --- Uitloggen ---
 
 function initLogout() {
-  const btn = document.getElementById("logoutBtn");
+  const btn = document.getElementById('logoutBtn');
   if (!btn) return;
-  btn.addEventListener("click", async () => {
+  btn.addEventListener('click', async () => {
     await supabaseClient.auth.signOut();
-    window.location.href = "login.html";
+    window.location.href = 'login.html';
   });
 }
 
@@ -446,13 +415,21 @@ async function init() {
   currentSetId = getSetIdFromUrl();
 
   if (!currentSetId) {
-    document.getElementById("cardsGrid").innerHTML =
+    document.getElementById('cardsGrid').innerHTML =
       '<div class="empty-state">Geen set opgegeven. <a href="index.html" style="color:var(--accent)">Ga terug naar het overzicht.</a></div>';
     return;
   }
 
   // Configuratie voor deze set opzoeken (o.a. pokeball/masterball aan/uit)
-  currentSetConfig = MY_SETS.find((entry) => entry.id === currentSetId) || {};
+  // uit de my_sets tabel in Supabase.
+  const { data: setConfigRow } = await supabaseClient
+    .from('my_sets')
+    .select('pokeball, masterball')
+    .eq('user_id', currentUser.id)
+    .eq('set_id', currentSetId)
+    .maybeSingle();
+
+  currentSetConfig = setConfigRow || {};
 
   initFilters();
   initReset();

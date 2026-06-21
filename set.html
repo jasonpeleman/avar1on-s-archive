@@ -1,107 +1,95 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="nl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="color-scheme" content="dark" />
-    <title>Set — Avar1on's Archive</title>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark">
+  <title>Set — Avar1on's Archive</title>
 
-    <!-- PWA -->
-    <link rel="manifest" href="manifest.json" />
-    <meta name="theme-color" content="#0a0a0a" />
-    <link rel="icon" href="assets/icons/favicon.png" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta
-      name="apple-mobile-web-app-status-bar-style"
-      content="black-translucent"
-    />
-    <meta name="apple-mobile-web-app-title" content="Archive" />
-    <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#131313">
+  <link rel="icon" href="assets/icons/favicon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Archive">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
 
-    <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="set.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap"
-      rel="stylesheet"
-    />
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  </head>
-  <body>
-    <!-- HEADER (zelfde als homepage) -->
-    <header>
-      <a class="logo" href="index.html">
-        <img src="assets/logo.png" alt="Avarion's Archive" />
-      </a>
-      <div class="header-stats">
-        <div class="header-stat">
-          <div class="val" id="globalPct">0%</div>
-          <div class="lbl">Gemiddeld compleet</div>
-        </div>
-        <div class="header-stat">
-          <div class="val" id="globalOwned">0</div>
-          <div class="lbl">Kaarten heb ik</div>
-        </div>
-        <button class="logout-btn" id="logoutBtn">Uitloggen</button>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="set.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <!-- HEADER (zelfde als homepage) -->
+  <header>
+    <a class="logo" href="index.html">
+      <img src="assets/logo.png" alt="Avarion's Archive">
+    </a>
+    <div class="header-stats">
+      <div class="header-stat">
+        <div class="val" id="globalPct">0%</div>
+        <div class="lbl">Gemiddeld compleet</div>
       </div>
-    </header>
-
-    <!-- SET HEADER -->
-    <div class="detail-header">
-      <a class="back-btn" href="index.html">&#8592; Terug</a>
-      <img
-        class="detail-set-logo"
-        id="detailLogo"
-        src=""
-        alt=""
-        style="display: none"
-      />
-      <div class="detail-set-info">
-        <h2 id="detailName">Laden...</h2>
-        <p id="detailMeta">—</p>
+      <div class="header-stat">
+        <div class="val" id="globalOwned">0</div>
+        <div class="lbl">Kaarten heb ik</div>
       </div>
-      <div class="detail-stats">
-        <div class="detail-stat">
-          <div class="val" id="statOwned">0</div>
-          <div class="lbl">Heb ik</div>
-        </div>
-        <div class="detail-stat">
-          <div class="val" id="statMissing">0</div>
-          <div class="lbl">Nog nodig</div>
-        </div>
-        <div class="detail-stat">
-          <div class="val" id="statTotal">0</div>
-          <div class="lbl">Totaal</div>
-        </div>
+      <button class="logout-btn" id="logoutBtn">Uitloggen</button>
+    </div>
+  </header>
+
+  <!-- SET HEADER -->
+  <div class="detail-header">
+    <a class="back-btn" href="index.html">&#8592; Terug</a>
+    <img class="detail-set-logo" id="detailLogo" src="" alt="" style="display:none">
+    <div class="detail-set-info">
+      <h2 id="detailName">Laden...</h2>
+      <p id="detailMeta">—</p>
+    </div>
+    <div class="detail-stats">
+      <div class="detail-stat">
+        <div class="val" id="statOwned">0</div>
+        <div class="lbl">Heb ik</div>
+      </div>
+      <div class="detail-stat">
+        <div class="val" id="statMissing">0</div>
+        <div class="lbl">Nog nodig</div>
+      </div>
+      <div class="detail-stat">
+        <div class="val" id="statTotal">0</div>
+        <div class="lbl">Totaal</div>
       </div>
     </div>
+  </div>
 
-    <!-- VOORTGANGSBALK -->
-    <div class="detail-progress-section">
-      <div class="detail-progress-bar-wrap">
-        <div class="detail-progress-bar" id="detailBar"></div>
-      </div>
-      <div class="detail-pct" id="detailPct">0%</div>
+  <!-- VOORTGANGSBALK -->
+  <div class="detail-progress-section">
+    <div class="detail-progress-bar-wrap">
+      <div class="detail-progress-bar" id="detailBar"></div>
     </div>
+    <div class="detail-pct" id="detailPct">0%</div>
+  </div>
 
-    <!-- FILTER & ACTIES -->
-    <div class="detail-controls">
-      <button class="filter-btn active" data-filter="all">Alle kaarten</button>
-      <button class="filter-btn" data-filter="owned">Heb ik</button>
-      <button class="filter-btn" data-filter="missing">Nog nodig</button>
-      <button class="reset-btn" id="resetBtn">Reset set</button>
+  <!-- FILTER & ACTIES -->
+  <div class="detail-controls">
+    <button class="filter-btn active" data-filter="all">Alle kaarten</button>
+    <button class="filter-btn" data-filter="owned">Heb ik</button>
+    <button class="filter-btn" data-filter="missing">Nog nodig</button>
+    <button class="reset-btn" id="resetBtn">Reset set</button>
+  </div>
+
+  <!-- KAARTEN GRID -->
+  <main class="cards-content">
+    <div class="cards-grid" id="cardsGrid">
+      <div class="empty-state">Kaarten laden...</div>
     </div>
+  </main>
 
-    <!-- KAARTEN GRID -->
-    <main class="cards-content">
-      <div class="cards-grid" id="cardsGrid">
-        <div class="empty-state">Kaarten laden...</div>
-      </div>
-    </main>
-
-    <script src="supabase-config.js"></script>
-    <script src="my-sets.js"></script>
-    <script src="set.js"></script>
-  </body>
+  <script src="supabase-config.js"></script>
+  <script src="set.js"></script>
+</body>
 </html>

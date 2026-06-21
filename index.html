@@ -7,26 +7,21 @@
     <title>Avar1on's Archive</title>
 
     <!-- PWA: maakt de site installeerbaar als app op een telefoon -->
-    <link rel="manifest" href="manifest.json" />
-    <meta name="theme-color" content="#0a0a0a" />
-    <link rel="icon" href="assets/icons/favicon.png" />
-    <!-- iOS leest het manifest niet volledig, dus eigen Apple-tags -->
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta
-      name="apple-mobile-web-app-status-bar-style"
-      content="black-translucent"
-    />
-    <meta name="apple-mobile-web-app-title" content="Archive" />
-    <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
-
-    <link rel="stylesheet" href="style.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap"
-      rel="stylesheet"
-    />
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#131313">
+  <link rel="icon" href="assets/icons/favicon.png">
+  <!-- iOS leest het manifest niet volledig, dus eigen Apple-tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Archive">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+ 
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="add-set.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   </head>
   <body>
     <!-- HEADER -->
@@ -60,33 +55,62 @@
       </p>
     </div>
 
-    <!-- MAIN CONTENT -->
-    <main class="home-content">
-      <!-- SERIES FILTER -->
-      <div class="series-filter" id="seriesFilter">
-        <span class="series-label">Series</span>
-        <button class="series-btn active" data-series="all">Alle</button>
-        <!-- Extra series-knoppen worden door JavaScript toegevoegd -->
-      </div>
-
-      <!-- SETS GRID -->
-      <div class="sets-grid" id="setsGrid">
-        <div class="loading-grid">Sets laden...</div>
-      </div>
-    </main>
-
-    <script src="supabase-config.js"></script>
-    <script src="my-sets.js"></script>
-    <script src="app.js"></script>
-
-    <!-- PWA: service worker registreren (maakt installeren mogelijk) -->
-    <script>
-      if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.register("service-worker.js").catch(() => {
-          // Stil falen — de site werkt ook prima zonder service worker,
-          // dit is alleen nodig voor de "installeer als app"-functie.
-        });
-      }
-    </script>
-  </body>
+  <!-- MAIN CONTENT -->
+  <main class="home-content">
+ 
+    <!-- SERIES FILTER -->
+    <div class="series-filter" id="seriesFilter">
+      <span class="series-label">Series</span>
+      <button class="series-btn active" data-series="all">Alle</button>
+      <!-- Extra series-knoppen worden door JavaScript toegevoegd -->
+    </div>
+ 
+    <!-- SETS GRID -->
+    <div class="sets-grid" id="setsGrid">
+      <div class="loading-grid">Sets laden...</div>
+    </div>
+ 
+  </main>
+ 
+  <!-- FAB: knop rechtsonder om een set toe te voegen -->
+  <button class="add-set-fab" id="addSetFab" aria-label="Set toevoegen" title="Set toevoegen">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+      <line x1="12" y1="5" x2="12" y2="19"/>
+      <line x1="5" y1="12" x2="19" y2="12"/>
+    </svg>
+  </button>
+ 
+  <!-- MODAL: zoeken + set toevoegen -->
+  <div class="add-set-backdrop" id="addSetBackdrop"></div>
+  <div class="add-set-modal" id="addSetModal">
+    <div class="add-set-modal-header">
+      <h3>Set toevoegen</h3>
+      <button class="add-set-close" id="addSetClose" aria-label="Sluiten">&times;</button>
+    </div>
+    <input
+      class="add-set-search"
+      id="addSetSearch"
+      type="text"
+      placeholder="Zoek een set op naam..."
+      autocomplete="off"
+    >
+    <div class="add-set-results" id="addSetResults">
+      <div class="add-set-loading">Typ om te zoeken naar een set.</div>
+    </div>
+  </div>
+ 
+  <script src="supabase-config.js"></script>
+  <script src="app.js"></script>
+  <script src="add-set.js"></script>
+ 
+  <!-- PWA: service worker registreren (maakt installeren mogelijk) -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js').catch(() => {
+        // Stil falen — de site werkt ook prima zonder service worker,
+        // dit is alleen nodig voor de "installeer als app"-functie.
+      });
+    }
+  </script>
+</body>
 </html>
