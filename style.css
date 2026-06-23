@@ -422,3 +422,57 @@ header {
     gap: 0.6rem;
   }
 }
+
+/* ============================================
+   HOMEPAGE NAVIGATIE GRID
+   ============================================ */
+.home-nav-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid var(--border2);
+}
+
+.home-nav-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 20px;
+  border-radius: 12px;
+  border: 1px solid var(--border2);
+  background: var(--card);
+  color: var(--text2);
+  text-decoration: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.18s;
+}
+
+.home-nav-card:hover {
+  background: var(--card-hover);
+  border-color: var(--border);
+  color: var(--text);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+
+.home-nav-card.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(232, 115, 28, 0.08);
+}
+
+@media (max-width: 600px) {
+  .home-nav-grid {
+    padding: 1rem;
+    gap: 10px;
+  }
+
+  .home-nav-card {
+    padding: 12px 14px;
+    font-size: 13px;
+  }
+}

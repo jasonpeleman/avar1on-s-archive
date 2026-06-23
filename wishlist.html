@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark">
+  <title>Wishlist — Avar1on's Archive</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#131313">
+  <link rel="icon" href="assets/icons/favicon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Archive">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="style.css?v=3">
+  <link rel="stylesheet" href="set.css?v=6">
+  <link rel="stylesheet" href="wishlist.css?v=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <a class="logo" href="index.html">
+      <img src="assets/logo.png" alt="Avarion's Archive">
+    </a>
+    <div class="header-stats">
+      <div class="header-stat">
+        <div class="val" id="wishlistCount">0</div>
+        <div class="lbl">Op wishlist</div>
+      </div>
+      <button class="logout-btn" id="logoutBtn">Uitloggen</button>
+    </div>
+  </header>
+
+  <!-- PAGE HEADER -->
+  <div class="wishlist-page-header">
+    <a class="back-btn" href="index.html">&#8592; Terug</a>
+    <div>
+      <h2>Wishlist</h2>
+      <p>Zoek kaarten en voeg toe wat je wil hebben</p>
+    </div>
+  </div>
+
+  <!-- ZOEKBALK -->
+  <div class="wishlist-search-section">
+    <div class="wishlist-search-row">
+      <input
+        class="wishlist-search-input"
+        id="wishlistSearch"
+        type="text"
+        placeholder="Zoek op kaartnaam (bijv. Charizard, Pikachu...)"
+        autocomplete="off"
+      >
+      <select class="wishlist-set-select" id="wishlistSetFilter">
+        <option value="">Alle sets</option>
+        <!-- Opties worden geladen door wishlist.js -->
+      </select>
+    </div>
+  </div>
+
+  <!-- HOOFDINHOUD: zoekresultaten links, wishlist rechts -->
+  <main class="wishlist-main">
+
+    <!-- ZOEKRESULTATEN -->
+    <section class="wishlist-results-section">
+      <h3 class="section-title">Zoekresultaten</h3>
+      <div id="searchResults" class="wishlist-results">
+        <div class="wishlist-empty">Typ een naam om kaarten te zoeken.</div>
+      </div>
+    </section>
+
+    <!-- WISHLIST -->
+    <section class="wishlist-list-section">
+      <h3 class="section-title">Mijn wishlist</h3>
+      <div id="wishlistItems" class="wishlist-results">
+        <div class="wishlist-empty">Je wishlist is leeg.</div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="supabase-config.js"></script>
+  <script src="wishlist.js"></script>
+</body>
+</html>

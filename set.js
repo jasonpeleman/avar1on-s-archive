@@ -19,7 +19,6 @@ let currentSetConfig = null; // { pokeball, masterball } uit de my_sets tabel in
 let currentUser = null;
 let allCards = [];
 let currentFilter = 'all';
-let showPrices = false;
 
 // owned = Map van "cardId:variant" -> true, alleen voor de huidige set.
 let ownedMap = {};
@@ -177,28 +176,39 @@ function countOwned(cards) {
   return n;
 }
 
-// --- Prijs bepalen (Cardmarket, via TCGdex) ---
-// Cardmarket geeft maar 2 categorieën: "trend" (niet-foil) en
-// "trend-holo" (alle foil-varianten samen, dus Reverse/Holo/1st Ed.
-// delen dezelfde prijs). We tonen de prijs die het best bij de
-// kaart past: als de kaart een foil-variant heeft (reverse/holo),
-// gebruiken we trend-holo, anders trend.
-// Geeft null terug als er geen prijsdata beschikbaar is (komt voor
-// bij oudere EX/Full Art kaarten of zeer recente releases).
+// --- Prijs per variant bepalen (TCGPlayer, via TCGdex) ---
+// TCGPlayer geeft, anders dan Cardmarket, een aparte prijs per variant
+// (normal/holofoil/reverse-holofoil/etc.), dus elke variant-knop kan
+// zijn eigen, specifieke marktprijs tonen in plaats van één algemene
+// kaartprijs. Prijzen zijn in USD (TCGPlayer is een Amerikaanse markt).
 
-function getCardPrice(card) {
-  const cm = card.pricing?.cardmarket;
-  if (!cm) return null;
+// Mapping van onze eigen variant-sleutels naar TCGPlayer's sleutels
+const TCGPLAYER_VARIANT_MAP = {
+  normal:       'normal',
+  reverse:      'reverse-holofoil',
+  holo:         'holofoil',
+  firstEdition: '1st-edition',
+  pokeball:     null,   // niet beschikbaar via API (handmatige variant)
+  masterball:   null,   // niet beschikbaar via API (handmatige variant)
+};
 
-  const hasFoil = card.variants?.reverse || card.variants?.holo || card.variants?.firstEdition;
-  const price = hasFoil ? (cm['trend-holo'] ?? cm.trend) : cm.trend;
+function getVariantPrice(card, variantKey) {
+  const tcgKey = TCGPLAYER_VARIANT_MAP[variantKey];
+  if (!tcgKey) return null;
 
+  const tp = card.pricing?.tcgplayer;
+  if (!tp) return null;
+
+  const variantData = tp[tcgKey];
+  if (!variantData) return null;
+
+  const price = variantData.marketPrice ?? variantData.midPrice;
   return typeof price === 'number' ? price : null;
 }
 
 function formatPrice(price) {
   if (price === null) return null;
-  return '€' + price.toFixed(2).replace('.', ',');
+  return '$' + price.toFixed(2);
 }
 
 function sortCards(cards) {
@@ -228,7 +238,6 @@ function updateProgress() {
 
 function renderCards() {
   const grid = document.getElementById('cardsGrid');
-  grid.classList.toggle('show-prices', showPrices);
 
   const filtered = allCards.filter(card => {
     const variants = getVariants(card);
@@ -259,6 +268,8 @@ function renderCards() {
 
     const variantHTML = variants.map(v => {
       const checked = isVariantOwned(card.id, v.key);
+      const price = getVariantPrice(card, v.key);
+      const priceLabel = formatPrice(price);
       return `
         <button
           class="variant-btn${checked ? ' checked' : ''}${v.manual ? ' manual' : ''}"
@@ -267,12 +278,10 @@ function renderCards() {
         >
           <span class="variant-check">${checked ? '✓' : ''}</span>
           <span class="variant-label">${v.label}</span>
+          ${priceLabel ? `<span class="variant-price">${priceLabel}</span>` : ''}
         </button>
       `;
     }).join('');
-
-    const price = getCardPrice(card);
-    const priceLabel = formatPrice(price);
 
     div.innerHTML = `
       ${card.image
@@ -280,10 +289,7 @@ function renderCards() {
         : '<div class="card-img-placeholder"></div>'
       }
       <div class="poke-card-info">
-        <div class="poke-card-top-row">
-          <div class="poke-card-num">${card.localId} / ${card.set?.cardCount?.official || '?'}</div>
-          ${priceLabel ? `<div class="poke-card-price">${priceLabel}</div>` : ''}
-        </div>
+        <div class="poke-card-num">${card.localId} / ${card.set?.cardCount?.official || '?'}</div>
         <div class="poke-card-name">${card.name}</div>
         <div class="poke-card-rarity">${card.rarity || ''}</div>
         <div class="variant-row">${variantHTML}</div>
@@ -412,18 +418,6 @@ function initFilters() {
   });
 }
 
-// --- Prijzen tonen/verbergen ---
-
-function initPriceToggle() {
-  const btn = document.getElementById('priceToggleBtn');
-  btn.addEventListener('click', () => {
-    showPrices = !showPrices;
-    btn.classList.toggle('active', showPrices);
-    btn.textContent = showPrices ? 'Verberg prijzen' : 'Toon prijzen';
-    document.getElementById('cardsGrid').classList.toggle('show-prices', showPrices);
-  });
-}
-
 // --- Reset ---
 
 function initReset() {
@@ -544,7 +538,6 @@ async function init() {
   currentSetConfig = setConfigRow || {};
 
   initFilters();
-  initPriceToggle();
   initReset();
   initVariantToggles();
   initDeleteSet();

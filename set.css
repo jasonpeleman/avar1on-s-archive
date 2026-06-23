@@ -217,51 +217,9 @@
   padding: 10px 12px 12px;
 }
 
-.poke-card-top-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 6px;
-}
-
 .poke-card-num {
   font-size: 11px;
   color: var(--text3);
-}
-
-.poke-card-price {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--green);
-  white-space: nowrap;
-  display: none; /* standaard verborgen, getoond via .show-prices op de grid */
-}
-
-.cards-grid.show-prices .poke-card-price {
-  display: block;
-}
-
-.price-toggle-btn {
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
-  padding: 5px 14px;
-  border-radius: 999px;
-  border: 1px solid var(--border2);
-  background: transparent;
-  color: var(--text2);
-  cursor: pointer;
-  transition: all 0.15s;
-}
-
-.price-toggle-btn:hover {
-  color: var(--text);
-  border-color: var(--border);
-}
-
-.price-toggle-btn.active {
-  background: rgba(45, 212, 160, 0.15);
-  border-color: var(--green);
-  color: var(--green);
 }
 
 .poke-card-name {
@@ -365,6 +323,22 @@
  
 .variant-label {
   font-size: 12px;
+  flex: 1;
+}
+
+.variant-price {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text2);
+  white-space: nowrap;
+}
+
+.variant-btn.checked .variant-price {
+  color: var(--green);
+}
+
+.variant-btn.manual.checked .variant-price {
+  color: var(--accent);
 }
  
 /* === LEEG / LOADING === */

@@ -17,7 +17,7 @@
 //  netjes opgeruimd worden.
 // ============================================
 
-const CACHE_NAME = 'avar1ons-archive-v2';
+const CACHE_NAME = 'avar1ons-archive-v3';
 
 const PRECACHE_FILES = [
   'index.html',
